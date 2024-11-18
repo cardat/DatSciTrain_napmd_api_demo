@@ -1,7 +1,7 @@
 # DatSciTrain_napmd_api_demo
-Created by Anh Han
+Anh Han
 
-20241118
+2024-11-18
 
 CARDAT's NAPMD API Training
 
