@@ -1,0 +1,118 @@
+# remove.packages("napmdtools")
+# library(devtools)
+# install_github("cardat/napmdtools", build_vignettes = TRUE, force = TRUE)
+library(napmdtools)
+
+#### imporant: set up your api key ####
+"
+1. run create_api_key() in the Console.
+2. get your username and password from the data curator.
+3. use this to read it into your session `api_key <- yaml::read_yaml('private/api_key.yaml')`
+4. use this in the functions, e.g.
+    `list_air_pollution_monitors(state = 'NSW', username = api_key$username, password = api_key$password)`
+"
+api_key <- yaml::read_yaml('private/api_key.yaml')
+stns <- list_air_pollution_monitors(
+  state = "NSW"
+  , 
+  username = api_key$username
+  , 
+  password = api_key$password
+)
+stns
+vars <- get_variables(
+  station_id = 453
+  , 
+  username = api_key$username
+  , 
+  password = api_key$password
+)
+vars
+times <- get_times(
+  station_id = 453
+  , 
+  variable="pm25"
+  , 
+  username = api_key$username
+  , 
+  password = api_key$password
+)
+times
+obs <- get_monitor(
+  station_id = 453
+  , 
+  variable="pm25"
+  , 
+  start_time_utc = "2019-08-20 14:00:00"
+  , 
+  end_time_utc= "2019-12-31 14:00:00"
+  , 
+  username = api_key$username
+  , 
+  password = api_key$password
+)
+obs
+slice <- get_slice_all(
+  variable="pm25"
+  ,
+  time_utc = "2019-08-20 14:00:00"
+  ,
+  state="NSW"
+  ,
+  username = api_key$username
+  ,
+  password = api_key$password
+)
+slice
+
+
+#### do daily ####
+# the bulk of the NAPMD API data are in the the hourly data table: air_pollution_monitor.ap_monitor_data_master. 
+# We have some historical PM2.5/10 data and also recent Tasmanian PM2.5/10 data available only as daily averages. These are stored separately in the air_pollution_monitor.ap_monitor_data_master  table.
+# we have a few more functions, similar to get_monitor, get_times and get_slice_all but querying the air_pollution_monitor.ap_monitor_data_daily_master table instead 
+slice <- get_slice_daily(
+  variable="pm25"
+  ,
+  date = "2019-08-20"
+  ,
+  state="TAS"
+  ,
+  username = api_key$username
+  ,
+  password = api_key$password
+)
+slice
+
+
+vars <- get_variables_daily(
+  station_id = 300
+  , 
+  username = api_key$username
+  , 
+  password = api_key$password
+)
+vars
+times <- get_times_daily(
+  station_id = 300
+  , 
+  variable="pm25"
+  , 
+  username = api_key$username
+  , 
+  password = api_key$password
+)
+times
+obs <- get_monitor_daily(
+  station_id = 300
+  , 
+  variable="pm25"
+  , 
+  start_date = "2019-08-20"
+  , 
+  end_date= "2019-12-31"
+  , 
+  username = api_key$username
+  , 
+  password = api_key$password
+)
+obs
