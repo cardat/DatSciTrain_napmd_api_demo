@@ -4,14 +4,9 @@
 
 
 # Install napmdtools package ####
-
-# uncomment and run the following if napmdtools package not installed
-if(!require(napmdtools)){
-  remove.packages("napmdtools")
-  library(devtools)
-  install_github("cardat/napmdtools", build_vignettes = TRUE, force = TRUE)
-  library(napmdtools)
-}
+library(devtools)
+install_github("cardat/napmdtools", build_vignettes = TRUE, force = TRUE)
+library(napmdtools)
 
 # create the API key file and save credentials ####
 create_api_key()
