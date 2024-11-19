@@ -1,17 +1,14 @@
-# remove.packages("napmdtools")
-# library(devtools)
-# install_github("cardat/napmdtools", build_vignettes = TRUE, force = TRUE)
-library(napmdtools)
+# 02-api_demo
 
-#### imporant: set up your api key ####
-"
-1. run create_api_key() in the Console.
-2. get your username and password from the data curator.
-3. use this to read it into your session `api_key <- yaml::read_yaml('private/api_key.yaml')`
-4. use this in the functions, e.g.
-    `list_air_pollution_monitors(state = 'NSW', username = api_key$username, password = api_key$password)`
-"
+# Demonstration of napmdtools functions
+
+# Load napmdtools package and read in credentials
+library(napmdtools)
 api_key <- yaml::read_yaml('private/api_key.yaml')
+
+# Query hourly data tables ####
+
+# List of air pollution monitors for a state
 stns <- list_air_pollution_monitors(
   state = "NSW"
   , 
@@ -20,6 +17,8 @@ stns <- list_air_pollution_monitors(
   password = api_key$password
 )
 stns
+
+# Variables for a specified station
 vars <- get_variables(
   station_id = 453
   , 
@@ -28,6 +27,8 @@ vars <- get_variables(
   password = api_key$password
 )
 vars
+
+# Datetime range for a specified station and variable
 times <- get_times(
   station_id = 453
   , 
@@ -38,6 +39,8 @@ times <- get_times(
   password = api_key$password
 )
 times
+
+# Observations for a specified station, variable and datetime range
 obs <- get_monitor(
   station_id = 453
   , 
@@ -52,6 +55,8 @@ obs <- get_monitor(
   password = api_key$password
 )
 obs
+
+# Observations for a specified state, variable and datetime
 slice <- get_slice_all(
   variable="pm25"
   ,
@@ -66,10 +71,33 @@ slice <- get_slice_all(
 slice
 
 
-#### do daily ####
+# Daily data ####
 # the bulk of the NAPMD API data are in the the hourly data table: air_pollution_monitor.ap_monitor_data_master. 
-# We have some historical PM2.5/10 data and also recent Tasmanian PM2.5/10 data available only as daily averages. These are stored separately in the air_pollution_monitor.ap_monitor_data_master  table.
-# we have a few more functions, similar to get_monitor, get_times and get_slice_all but querying the air_pollution_monitor.ap_monitor_data_daily_master table instead 
+# We have some historical PM2.5/10 data and also recent Tasmanian PM2.5/10 data available only as daily averages. These are stored separately in the air_pollution_monitor.ap_monitor_data_master table.
+
+# Variables for a specified station
+vars <- get_variables_daily(
+  station_id = 300
+  , 
+  username = api_key$username
+  , 
+  password = api_key$password
+)
+vars
+
+# Datetime range for a specified station and variable
+times <- get_times_daily(
+  station_id = 300
+  , 
+  variable="pm25"
+  , 
+  username = api_key$username
+  , 
+  password = api_key$password
+)
+times
+
+# Observations for a specified state, variable and datetime
 slice <- get_slice_daily(
   variable="pm25"
   ,
@@ -83,36 +111,19 @@ slice <- get_slice_daily(
 )
 slice
 
-
-vars <- get_variables_daily(
-  station_id = 300
-  , 
-  username = api_key$username
-  , 
-  password = api_key$password
-)
-vars
-times <- get_times_daily(
-  station_id = 300
-  , 
-  variable="pm25"
-  , 
-  username = api_key$username
-  , 
-  password = api_key$password
-)
-times
+# Observations for a specified station, variable and datetime range
 obs <- get_monitor_daily(
   station_id = 300
   , 
   variable="pm25"
   , 
-  start_date = "2019-08-20"
+  start_date = "2019-10-01"
   , 
-  end_date= "2019-12-31"
+  end_date= "2019-10-31"
   , 
   username = api_key$username
   , 
   password = api_key$password
 )
 obs
+
