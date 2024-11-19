@@ -1,7 +1,7 @@
 # DatSciTrain_napmd_api_demo
-Anh Han
+Anh Han, Cassandra Yuen and Ivan Hanigan
 
-2024-11-18
+2024-11-19
 
 CARDAT's NAPMD API Training
 
